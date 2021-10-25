@@ -1,0 +1,11 @@
+{
+  "combinatorial": {
+    "Overview": "/",
+    "nGmaps": "/gmaps",
+    "gMaps Zoo": "/zoo",
+    "Pixel Maps": "/pixelmap",
+    "Labels zoo": "/zoo_labels",
+    "dict_nGmaps": "/dict_gmaps",
+    "comparisons": "/comparisons"
+  }
+}
