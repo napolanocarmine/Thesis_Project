@@ -310,7 +310,7 @@ class dict_nGmap:
                 #print(f'\nalpha -> {self.alpha[i]}')
                 
                 #self.print_all()
-                print(f'alpha[i][cur] -> {self.alpha[i][cur]}')
+                #print(f'alpha[i][cur] -> {self.alpha[i][cur]}')
 
                 #try:
                 #other = next((item for item in self.alpha[i][cur] if item is not None))
@@ -583,7 +583,8 @@ class dict_nGmap:
         first_cell = self.cell_i(i, d1)
         second_cell = set(self.cell_i(i, d2))
         for d in first_cell:
-            if self.alpha[i][d] in second_cell:
+            print(f'd -> {d}')
+            if self.alpha[i][d][-1] in second_cell:
                 return True
         return False
     
