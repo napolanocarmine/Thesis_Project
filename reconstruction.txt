@@ -34,21 +34,3 @@ Alpha[1][8] -> 9
 
 Alpha[2][custom_alpha[2][8]] -> 8
 Alpha[2][8] -> 8
-
-Alpha[0][custom_alpha[0][6]] -> 6
-Alpha[0][6] -> 5
-
-Alpha[1][custom_alpha[1][6]] -> 6
-Alpha[1][6] -> 1
-
-Alpha[2][custom_alpha[2][6]] -> 6
-Alpha[2][6] -> 6
-
-Alpha[0][custom_alpha[0][1]] -> 1
-Alpha[0][1] -> 2
-
-Alpha[1][custom_alpha[1][1]] -> 1
-Alpha[1][1] -> 6
-
-Alpha[2][custom_alpha[2][1]] -> 1
-Alpha[2][1] -> 1
