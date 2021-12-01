@@ -87,7 +87,7 @@ for B in 8,16,32,64:
     print (f'| {B:2} | {B//2-2:2} |  {B//2-1:2} |  {2**(B//2-2)-1:10} | {2**(B//2-1)-1:10} | ')
 
 # %%
-R,C = 2,5 # number of rows and columns
+R,C = 2,2 # number of rows and columns
 
 # %%
 bits2type = {
@@ -225,6 +225,7 @@ for y in range (R):
     for i in range (4):
         D |= {interleave2 (x,y) << 3 | 0b100 | i}
 
+print(f'D -> {D}')
 # %% [markdown]
 # # towards an implicit Set
 

@@ -128,7 +128,7 @@ Alpha[2][23] -> 7
 Alpha[0][custom_alpha[0][24]] -> 24
 Alpha[0][24] -> 23
 
-Alpha[1][custom_alpha[1][24]] -> 24
+Alpha[1][custom_alpha[1][24]] -> 22
 Alpha[1][24] -> 15
 
 Alpha[2][custom_alpha[2][24]] -> 24
@@ -137,7 +137,7 @@ Alpha[2][24] -> 8
 Alpha[0][custom_alpha[0][8]] -> 8
 Alpha[0][8] -> 7
 
-Alpha[1][custom_alpha[1][8]] -> 8
+Alpha[1][custom_alpha[1][8]] -> 6
 Alpha[1][8] -> 1
 
 Alpha[2][custom_alpha[2][8]] -> 8
