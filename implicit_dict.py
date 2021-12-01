@@ -16,7 +16,7 @@ class implicit_dict(dict):
 
         return super().__getitem__(k)
 
-    def __setitem__(self, k, v) -> None:
+    def __setitem__(self, k, v):
 
         self.flag_set.add(k)
 
