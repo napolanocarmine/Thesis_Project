@@ -10,13 +10,12 @@ class implicit_dict(dict):
 
     def __getitem__(self, k):
         
-        
-
+        #print(f'k -> {k}')
         if k not in self.flag_set:
             print(f'k -> {k}')
             raise KeyError
 
-        if k not in super().keys():
+        elif k not in super().keys():
             #print(f'sono in get item -> {self.i}')
             if self.i == 0:
                 return self.get_alpha0(k) #vedere come gestire per un generico alpha
@@ -32,9 +31,18 @@ class implicit_dict(dict):
         self.flag_set.add(k)
         #print('sono entrato in set item')
 
-        #the following if has to be written in order to can manage the different alphas
-        if alpha_1(k) != v:
-            return super().__setitem__(k, v)
+        if self.i == 0:
+            if self.get_alpha0(k) != v:
+                return super().__setitem__(k, v)
+
+        elif self.i  == 1:
+            if alpha_1(k) != v:
+                return super().__setitem__(k, v)
+        
+        elif self.i == 2:
+            if self.get_alpha2(k) != v:
+                return super().__setitem__(k, v)
+
 
     def __delitem__(self, v):
         
