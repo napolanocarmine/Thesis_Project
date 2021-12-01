@@ -1,4 +1,4 @@
-from pixel_map_z_curve_full import alpha_1, D, alpha_0, alpha_2
+from pixel_map_z_curve_full import D, alpha_1, alpha_0, alpha_2
 
 class implicit_dict(dict):
     
@@ -6,20 +6,31 @@ class implicit_dict(dict):
         super().__init__()
         self.flag_set = D
         #print(f'\nD\n{self.flag_set}')
+        self.i = None
 
     def __getitem__(self, k):
+        
+        
 
         if k not in self.flag_set:
+            print(f'k -> {k}')
             raise KeyError
 
         if k not in super().keys():
-            return alpha_1(k) #vedere come gestire per un generico alpha
+            #print(f'sono in get item -> {self.i}')
+            if self.i == 0:
+                return self.get_alpha0(k) #vedere come gestire per un generico alpha
+            elif self.i == 1:
+                return alpha_1(k)
+            else:
+                return self.get_alpha2(k)
 
         return super().__getitem__(k)
 
     def __setitem__(self, k, v):
-
+        
         self.flag_set.add(k)
+        #print('sono entrato in set item')
 
         #the following if has to be written in order to can manage the different alphas
         if alpha_1(k) != v:
@@ -42,3 +53,8 @@ class implicit_dict(dict):
     def get_alpha0(self, k):
         return alpha_0(k)
 
+    def get_alpha2(self, k):
+        return alpha_2(k)
+
+    def set_i(self, i):
+        self.i = i
