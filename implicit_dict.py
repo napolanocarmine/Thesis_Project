@@ -31,3 +31,6 @@ class implicit_dict(dict):
         if v in super().__getitem__(v):
             return super().__delitem__(v)
 
+    def get_set(self):
+        return self.flag_set
+
