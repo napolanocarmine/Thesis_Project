@@ -1,0 +1,90 @@
+
+Alpha[0][custom_alpha[0][75]] -> 75
+Alpha[0][75] -> 74
+
+Alpha[1][custom_alpha[1][75]] -> 67
+Alpha[1][75] -> 55
+
+Alpha[2][custom_alpha[2][75]] -> 75
+Alpha[2][75] -> 73
+
+Alpha[0][custom_alpha[0][74]] -> 74
+Alpha[0][74] -> 75
+
+Alpha[1][custom_alpha[1][74]] -> 55
+Alpha[1][74] -> 67
+
+Alpha[2][custom_alpha[2][74]] -> 74
+Alpha[2][74] -> 72
+
+Alpha[0][custom_alpha[0][73]] -> 73
+Alpha[0][73] -> 72
+
+Alpha[1][custom_alpha[1][73]] -> 31
+Alpha[1][73] -> 53
+
+Alpha[2][custom_alpha[2][73]] -> 73
+Alpha[2][73] -> 75
+
+Alpha[0][custom_alpha[0][72]] -> 72
+Alpha[0][72] -> 73
+
+Alpha[1][custom_alpha[1][72]] -> 53
+Alpha[1][72] -> 31
+
+Alpha[2][custom_alpha[2][72]] -> 72
+Alpha[2][72] -> 74
+
+Alpha[0][custom_alpha[0][23]] -> 65
+Alpha[0][23] -> 22
+
+Alpha[1][custom_alpha[1][23]] -> 23
+Alpha[1][23] -> 64
+
+Alpha[2][custom_alpha[2][23]] -> 23
+Alpha[2][23] -> 21
+
+Alpha[0][custom_alpha[0][21]] -> 67
+Alpha[0][21] -> 20
+
+Alpha[1][custom_alpha[1][21]] -> 21
+Alpha[1][21] -> 66
+
+Alpha[2][custom_alpha[2][21]] -> 21
+Alpha[2][21] -> 23
+
+Alpha[0][custom_alpha[0][66]] -> 20
+Alpha[0][66] -> 67
+
+Alpha[1][custom_alpha[1][66]] -> 66
+Alpha[1][66] -> 21
+
+Alpha[2][custom_alpha[2][66]] -> 66
+Alpha[2][66] -> 64
+
+Alpha[0][custom_alpha[0][64]] -> 22
+Alpha[0][64] -> 65
+
+Alpha[1][custom_alpha[1][64]] -> 64
+Alpha[1][64] -> 23
+
+Alpha[2][custom_alpha[2][64]] -> 64
+Alpha[2][64] -> 66
+
+Alpha[0][custom_alpha[0][2]] -> 7
+Alpha[0][2] -> 3
+
+Alpha[1][custom_alpha[1][2]] -> 2
+Alpha[1][2] -> 6
+
+Alpha[2][custom_alpha[2][2]] -> 2
+Alpha[2][2] -> 0
+
+Alpha[0][custom_alpha[0][0]] -> 5
+Alpha[0][0] -> 1
+
+Alpha[1][custom_alpha[1][0]] -> 0
+Alpha[1][0] -> 4
+
+Alpha[2][custom_alpha[2][0]] -> 0
+Alpha[2][0] -> 2
