@@ -495,7 +495,8 @@ def plot(D):
     plt.gca().axis('off')
 
 
-    plt.savefig(f'Morton_full_{R}x{C}.pdf')
+    #plt.savefig(f'Morton_full_{R}x{C}.pdf')
+    plt.savefig(f'Morton_full_{R}x{C}.png')
 
 
 
