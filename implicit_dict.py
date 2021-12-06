@@ -31,10 +31,7 @@ class implicit_dict(dict):
     def __setitem__(self, k, v):
         
         self.flag_set.add(k)
-        #print('sono entrato in set item')
 
-        #print(f'k -> {k}')
-        #print(f'v -> {v}')
         if self.i == 0:
             if self.get_alpha0(k) != v:
                 #print('alpha 0 diverso')
@@ -64,7 +61,7 @@ class implicit_dict(dict):
 
     
     def get_set(self):
-        return self.flag_set
+        return D
 
     def get_alpha0(self, k):
         return alpha_0(k)
@@ -78,5 +75,5 @@ class implicit_dict(dict):
     def set_i(self, i):
         self.i = i
 
-    def plot(self):
-        plot(self.flag_set)
+    def plot(self, darts):
+        plot(darts)
