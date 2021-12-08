@@ -4,7 +4,7 @@ class implicit_dict(dict):
     
     def __init__(self, i = None):
         super().__init__()
-        self.flag_set = D
+        #self.flag_set = D
         self.i = i
 
     def __getitem__(self, k):
@@ -16,7 +16,7 @@ class implicit_dict(dict):
             print(f'k -> {k}')
             raise KeyError """
 
-        if k not in super().keys() or k not in self.flag_set:
+        if k not in super().keys() :#or k not in self.flag_set:
             #print(f'sono in get item -> {self.i}')
             if self.i == 0:
                 return self.get_alpha0(k) #vedere come gestire per un generico alpha
@@ -29,7 +29,7 @@ class implicit_dict(dict):
 
     def __setitem__(self, k, v):
         
-        self.flag_set.add(k)
+        #self.flag_set.add(k)
 
         if self.i == 0:
             if self.get_alpha0(k) != v:
@@ -58,10 +58,6 @@ class implicit_dict(dict):
             print('sto cancellando...')
             return super().__delitem__(v)
 
-    
-    def get_set(self):
-        return D
-
     def get_alpha0(self, k):
         return alpha_0(k)
     
@@ -73,6 +69,3 @@ class implicit_dict(dict):
 
     def set_i(self, i):
         self.i = i
-
-    def plot(self, darts):
-        plot(darts)
