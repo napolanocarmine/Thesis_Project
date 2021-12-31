@@ -1,10 +1,9 @@
-from pixel_map_z_curve_full import D, alpha_1, alpha_0, alpha_2, plot
+from pixel_map_z_curve_full import alpha_1, alpha_0, alpha_2
 
 class implicit_dict(dict):
     
     def __init__(self, i = None):
         super().__init__()
-        #self.flag_set = D
         self.i = i
 
     def __getitem__(self, k):
