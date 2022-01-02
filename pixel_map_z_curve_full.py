@@ -324,7 +324,8 @@ for d in D:
     
     b = f'{d:08b}' # bin string
     text = f'{d} = {b[:-3]}-{b[-3]}-{b[-2:]}'
-    color = colormap((256//((R+1)*(C+1)))*(d//8)) # if y < R and x < C else '0.6'
+    #color = colormap((256//((R+1)*(C+1)))*(d//8)) # if y < R and x < C else '0.6'
+    color = 'black'
     
     if a == 0:
         xoff,yoff = (i % 2) *0.5, (i // 2)*0.02 -0.01
@@ -465,20 +466,21 @@ def plot(D):
         
         b = f'{d:08b}' # bin string
         text = f'{d} = {b[:-3]}-{b[-3]}-{b[-2:]}'
-        color = colormap((256//((R+1)*(C+1)))*(d//8)) # if y < R and x < C else '0.6'
+        #color = colormap((256//((R+1)*(C+1)))*(d//8)) # if y < R and x < C else '0.6'
+        color = 'black'
         
         if a == 0:
             xoff,yoff = (i % 2) *0.5, (i // 2)*0.02 -0.01
             plt.plot ([x+0.02 + xoff, x+0.48+xoff],[y+yoff,y+yoff], color=color)
-            plt.text(x+.25+xoff,y+6*yoff,text,verticalalignment='center',color=color,horizontalalignment='center',fontsize=8)
+            plt.text(x+.25+xoff,y+6*yoff,text,verticalalignment='center',color=color,horizontalalignment='center',fontsize=10)
         if a == 1:
             yoff,xoff = (i % 2) *0.5, (i // 2)*0.02 -0.01
             plt.plot ([x+xoff,x+xoff],[y+0.02+yoff,y+0.48+yoff], color=color)
-            plt.text(x+6*xoff,y+.25+yoff,text,verticalalignment='center',color=color,horizontalalignment='center',fontsize=8, rotation=90)
+            plt.text(x+6*xoff,y+.25+yoff,text,verticalalignment='center',color=color,horizontalalignment='center',fontsize=10, rotation=90)
             
         if d % 8 == 0: # and d < 8*R*C:
             plt.text (x+0.5, y+0.45, fr'{b[:-3]} $\rightarrow ({b[-7]}{b[-5]}_2, {b[-8]}{b[-6]}{b[-4]}_2) \rightarrow ({y}, {x})$',
-            verticalalignment='center',color=color,horizontalalignment='center',fontsize=8)
+            verticalalignment='center',color=color,horizontalalignment='center',fontsize=10)
 
     # 
     X,Y = 0.5 + np.array ([deinterleave2 (d) for d in sorted ([interleave2(x,y) for x in range (C+1) for y in range (R+1)])][:-1]).T
