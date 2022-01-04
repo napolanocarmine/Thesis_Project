@@ -88,7 +88,7 @@ for B in 8,16,32,64:
     print (f'| {B:2} | {B//2-2:2} |  {B//2-1:2} |  {2**(B//2-2)-1:10} | {2**(B//2-1)-1:10} | ')
 """
 # %%
-R,C = 1000,1000 # number of rows and columns
+R,C = 100,100 # number of rows and columns
 
 # %%
 bits2type = {
