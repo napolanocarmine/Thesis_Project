@@ -54,7 +54,7 @@ class implicit_dict(dict):
         #self.flag_set.remove(v)
 
         if v in super().keys():
-            print('sto cancellando...')
+            #print('sto cancellando...')
             return super().__delitem__(v)
 
     def get_alpha0(self, k):
