@@ -83,11 +83,12 @@ def deinterleave2(n):
 # | 64 | 30 |  31 |  1073741823 | 2147483647 | 
 
 # %%
+"""
 for B in 8,16,32,64:
     print (f'| {B:2} | {B//2-2:2} |  {B//2-1:2} |  {2**(B//2-2)-1:10} | {2**(B//2-1)-1:10} | ')
-
+"""
 # %%
-R,C = 2,2 # number of rows and columns
+R,C = 1000,1000 # number of rows and columns
 
 # %%
 bits2type = {
@@ -125,12 +126,14 @@ MASK_C = MASK_H | MASK_V
 MASK_I = 0
 
 # %%
+"""
 print (f'''\
 {MASK_C:0{nBits-3}b}  ... AND mask for corners
 {MASK_V:0{nBits-3}b}  ... AND mask for top and bottom borders
 {MASK_H:0{nBits-3}b}  ... AND mask for left and right borders
 {MASK_I:0{nBits-3}b}  ... AND mask for interior darts
 ''')
+"""
 
 # %%
 bitpatterns = np.array ([
@@ -225,7 +228,7 @@ for y in range (R):
     for i in range (4):
         D |= {interleave2 (x,y) << 3 | 0b100 | i}
 
-print(f'D -> {D}')
+#print(f'D -> {D}')
 # %% [markdown]
 # # towards an implicit Set
 
@@ -238,10 +241,12 @@ max_y = interleave2 (0,R) << 3
 mask_x = 0xffffffff ^ 2**nBits-1 | (MASK_H << 3)
 mask_y = 0xffffffff ^ 2**nBits-1 | (MASK_V << 3)
 
+"""
 print (f'''\
 {mask_x:032b} ... x-mask for (at most) 32-bit integer numbers
 {mask_y:032b} ... y-mask for (at most) 32-bit integer numbers
 ''')
+"""
 
 
 def is_in (d):
@@ -258,7 +263,7 @@ for d in D | {dd for dd in range (len(D), len(D)+10050)}:
         if (d in D and not is_in(d)) or (not d in D  and is_in(d)):
             z = d >> 3
             x,y = deinterleave2 (z)
-            print (f'{d:4} {d:08b} {x} {y} {is_in (d)}')
+            #print (f'{d:4} {d:08b} {x} {y} {is_in (d)}')
 
 # %% [markdown]
 # ### involution checks
@@ -296,7 +301,7 @@ for d in range (A.shape[1]):
 # %%
 g = nGmap.from_alpha_array (A)
 
-g.print_alpha_table()
+#g.print_alpha_table()
 
 assert g.is_valid
 assert g.no_0_cells == (R+1)*(C+1)
