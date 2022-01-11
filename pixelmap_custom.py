@@ -16,7 +16,7 @@ from combinatorial.notebooks.combinatorial.zoo import G2_SQUARE_BOUNDED, G2_SQUA
 import matplotlib.pyplot as plt
 
 
-from pixel_map_z_curve_full import D, alpha_0, R, C
+from pixel_map_z_curve_full import D, alpha_0, R, C, alpha_1, alpha_2
 from custom_dict_gmap import dict_nGmap
 
 
@@ -370,6 +370,40 @@ class custom_LM(dict_nGmap):
                     self.labels[i] = 'black'
             
             cnt += 1
+
+    def generate_chessboard_labels_2(self):
+        
+        res = R*C
+        if res % 2 != 0:
+            self.generate_chessboard_labels()
+        else:
+            k_odd = 1
+            cnt = 0
+            odd_label = 'blue'
+            even_label = 'black'
+            for x in self.m.all_i_cells(2):
+                
+                # 1 + (R*k_odd) is the point from which a new row starts
+                if cnt == 1+((R/2)*k_odd):
+                    if k_odd % 2 == 0:
+                        odd_label = 'blue'
+                        even_label = 'black'
+                    else:
+                        odd_label = 'black'
+                        even_label = 'blue'
+                    
+                    k_odd += 1
+                    print(cnt)
+                
+                for i in x:
+                    if cnt == 0:
+                        self.labels[i] = 'red'
+                    elif cnt % 2 == 0:
+                        self.labels[i] = even_label
+                    else:
+                        self.labels[i] = odd_label
+                cnt += 1
+            
     
 
     def _i_remove_contract(self, i, dart, rc, skip_check=False):
@@ -456,8 +490,6 @@ class custom_LM(dict_nGmap):
             print(f'dart that will be removed -> {d}')
             self.m._remove_dart (d)  # remove d' from gm.Darts;
         
-        
-
     def _is_i_removable_or_contractible(self, i, dart, rc):
         """
         Test if an i-cell of dart is removable/contractible:
@@ -482,9 +514,46 @@ class custom_LM(dict_nGmap):
                 return False
         return True
     
-    """
-        Method to print the active part (current Gmap) that is stored into the data structure.
-    """
-    def print_alpha(self):
-        for i in range(0, self.m.n + 1):
-            print(f'\nAlpha_{i} -> {self.m.alpha[i]}')
+    def remove_edges(self):
+        
+        # d ... some dart while iterating over all edges
+        for d in list (self.m.darts_of_i_cells (1)):
+            # e ... dart of the oposit face          
+            try:
+                e = self.m.alpha[2][d]
+            except KeyError:
+                e = alpha_2(d)                           
+
+            if self.labels[d] == 'red':                               # boundary edge
+                logging.debug ('Skipping: belongs to boundary.')
+                print(f'{d} is a boundary edge')
+                continue
+
+            if self.labels[d] == self.labels[e]:
+                self.m._remove(1, d)
+                continue
+
+
+
+'''             if d == self.a1(e):                      # dangling dart
+                logging.debug (f'{d} : pending')
+#                 logging.info (d)
+                self.remove_edge(d)
+                continue
+            if d == self.a0 (self.a1 (self.a0 (e))): # dangling edge
+                logging.debug (f'{d} : pending')
+#                 logging.info (d)
+                self.remove_edge(d)
+                continue
+            if d in self.cell_2 (e):                 # bridge (self-touching face)
+                logging.debug (f'Skipping bridge at {d}')
+                continue
+            if (self.value(d) == self.value(e)).all():       # identical colour in CCL
+                logging.debug  (f'{d} : low-contrast')
+#                 logging.info (d)
+                self.remove_edge(d)
+                continue
+            logging.debug (f'Skipping: contrast edge at {d}') '''
+
+
+    

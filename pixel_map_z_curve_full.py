@@ -508,8 +508,8 @@ def plot(D):
 
 
 
-def plot_chessboard(D, chessboard=None):
-    plt.figure(figsize=(24,16),frameon=False)
+def plot_chessboard(D, chessboard=None, filename=None):
+    plt.figure(figsize=(30,22),frameon=False)
     # plt.tight_layout()
     
     for d in D:
@@ -529,15 +529,15 @@ def plot_chessboard(D, chessboard=None):
         if a == 0:
             xoff,yoff = (i % 2) *0.5, (i // 2)*0.02 -0.01
             plt.plot ([x+0.02 + xoff, x+0.48+xoff],[y+yoff,y+yoff], color=color)
-            plt.text(x+.25+xoff,y+6*yoff,text,verticalalignment='center',color='black',horizontalalignment='center',fontsize=8)
+            plt.text(x+.25+xoff,y+6*yoff,text,verticalalignment='center',color='black',horizontalalignment='center',fontsize=7)
         if a == 1:
             yoff,xoff = (i % 2) *0.5, (i // 2)*0.02 -0.01
             plt.plot ([x+xoff,x+xoff],[y+0.02+yoff,y+0.48+yoff], color=color)
-            plt.text(x+6*xoff,y+.25+yoff,text,verticalalignment='center',color='black',horizontalalignment='center',fontsize=8, rotation=90)
+            plt.text(x+6*xoff,y+.25+yoff,text,verticalalignment='center',color='black',horizontalalignment='center',fontsize=7, rotation=90)
             
-        if d % 8 == 0: # and d < 8*R*C:
+        ''' if d % 8 == 0: # and d < 8*R*C:
             plt.text (x+0.5, y+0.45, fr'{b[:-3]} $\rightarrow ({b[-7]}{b[-5]}_2, {b[-8]}{b[-6]}{b[-4]}_2) \rightarrow ({y}, {x})$',
-            verticalalignment='center',color='green',horizontalalignment='center',fontsize=8)
+            verticalalignment='center',color='green',horizontalalignment='center',fontsize=8) '''
 
     # 
     X,Y = 0.5 + np.array ([deinterleave2 (d) for d in sorted ([interleave2(x,y) for x in range (C+1) for y in range (R+1)])][:-1]).T
@@ -554,6 +554,10 @@ def plot_chessboard(D, chessboard=None):
     plt.gca().axis('off')
 
 
-    #plt.savefig(f'Morton_full_{R}x{C}.pdf')
-    plt.savefig(f'Morton_Chessboard_{R}x{C}.png')
-    plt.savefig(f'Morton_Chessboard_{R}x{C}.pdf')
+    
+    if filename is None:
+        plt.savefig(f'Morton_Chessboard_{R}x{C}.png')
+        plt.savefig(f'Morton_Chessboard_{R}x{C}.pdf')
+    else:
+        plt.savefig(f'Morton_Chessboard_{R}x{C}_{filename}.png')
+        plt.savefig(f'Morton_Chessboard_{R}x{C}_{filename}.pdf')
