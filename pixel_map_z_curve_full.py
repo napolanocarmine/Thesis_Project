@@ -88,7 +88,7 @@ for B in 8,16,32,64:
     print (f'| {B:2} | {B//2-2:2} |  {B//2-1:2} |  {2**(B//2-2)-1:10} | {2**(B//2-1)-1:10} | ')
 """
 # %%
-R,C = 2,2 # number of rows and columns
+R,C = 4,4 # number of rows and columns
 
 # %%
 bits2type = {
@@ -463,6 +463,7 @@ def plot(D):
     # plt.tight_layout()
 
     for d in D:
+        print(d)
     #     e,i = d // 4, d % 4
     #     y,x,a = e2yxa (e,R,C)
         x,y = deinterleave2(d >> 3)
@@ -480,7 +481,7 @@ def plot(D):
             plt.text(x+.25+xoff,y+6*yoff,text,verticalalignment='center',color=color,horizontalalignment='center',fontsize=10)
         if a == 1:
             yoff,xoff = (i % 2) *0.5, (i // 2)*0.02 -0.01
-            plt.plot ([x+xoff,x+xoff],[y+0.02+yoff,y+0.48+yoff], color=color)
+            plt.plot ([x+xoff,x+xoff],[y+0.02+yoff,y+0.48+yoff], color='white')
             plt.text(x+6*xoff,y+.25+yoff,text,verticalalignment='center',color=color,horizontalalignment='center',fontsize=10, rotation=90)
             
         if d % 8 == 0: # and d < 8*R*C:
@@ -507,3 +508,52 @@ def plot(D):
 
 
 
+def plot_chessboard(D, chessboard=None):
+    plt.figure(figsize=(24,16),frameon=False)
+    # plt.tight_layout()
+    
+    for d in D:
+    #     e,i = d // 4, d % 4
+    #     y,x,a = e2yxa (e,R,C)
+        x,y = deinterleave2(d >> 3)
+        a = d >> 2 & 1
+        i = d & 0b011
+        
+        b = f'{d:08b}' # bin string
+        text = f'{d} = {b[:-3]}-{b[-3]}-{b[-2:]}'
+        #color = colormap((256//((R+1)*(C+1)))*(d//8)) # if y < R and x < C else '0.6'
+        
+        if chessboard != None: color = chessboard.labels[d]
+        else: color = 'black'
+        
+        if a == 0:
+            xoff,yoff = (i % 2) *0.5, (i // 2)*0.02 -0.01
+            plt.plot ([x+0.02 + xoff, x+0.48+xoff],[y+yoff,y+yoff], color=color)
+            plt.text(x+.25+xoff,y+6*yoff,text,verticalalignment='center',color='black',horizontalalignment='center',fontsize=8)
+        if a == 1:
+            yoff,xoff = (i % 2) *0.5, (i // 2)*0.02 -0.01
+            plt.plot ([x+xoff,x+xoff],[y+0.02+yoff,y+0.48+yoff], color=color)
+            plt.text(x+6*xoff,y+.25+yoff,text,verticalalignment='center',color='black',horizontalalignment='center',fontsize=8, rotation=90)
+            
+        if d % 8 == 0: # and d < 8*R*C:
+            plt.text (x+0.5, y+0.45, fr'{b[:-3]} $\rightarrow ({b[-7]}{b[-5]}_2, {b[-8]}{b[-6]}{b[-4]}_2) \rightarrow ({y}, {x})$',
+            verticalalignment='center',color='green',horizontalalignment='center',fontsize=8)
+
+    # 
+    X,Y = 0.5 + np.array ([deinterleave2 (d) for d in sorted ([interleave2(x,y) for x in range (C+1) for y in range (R+1)])][:-1]).T
+    plt.plot (X,Y,':',color='0.8')
+    plt.scatter (X,Y,s=100,color ='0.8') #= [colormap((256//((R+1)*(C+1)))*(d//8)) for d in sorted (D)[::8]])
+
+    plt.gca().set_aspect(1)
+    plt.xticks([])
+    plt.yticks([]);
+    plt.ylim (R+1.2,-.2)
+    plt.xlim (-.2,C+1.2)
+    plt.title (f'Encoding ${R}\\times{C}$ baselevel\nusing Morton codes and bit flips')
+    pass
+    plt.gca().axis('off')
+
+
+    #plt.savefig(f'Morton_full_{R}x{C}.pdf')
+    plt.savefig(f'Morton_Chessboard_{R}x{C}.png')
+    plt.savefig(f'Morton_Chessboard_{R}x{C}.pdf')
