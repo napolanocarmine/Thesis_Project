@@ -346,9 +346,16 @@ class custom_LM(dict_nGmap):
 
     def __init__(self):
         self.labels = {}
-        self.m = dict_nGmap(2)
+        self.m = dict_nGmap(2, D)
 
     def generate_chessboard_labels(self):
+
+        """
+            I can distinguish three cases:
+            cont = 0 -> bounding faces -> brown
+            cont = odd values  -> B
+            cont = even values -> W
+        """
 
         cnt = 0
         for x in self.m.all_i_cells(2):
@@ -358,15 +365,126 @@ class custom_LM(dict_nGmap):
                 if cnt == 0:
                     self.labels[i] = 'red'
                 elif cnt % 2 == 0:
-                    self.labels[i] = 'white'
+                    self.labels[i] = 'blue'
                 else:
                     self.labels[i] = 'black'
             
             cnt += 1
+    
+
+    def _i_remove_contract(self, i, dart, rc, skip_check=False):
         
         """
-            I can distinguish three cases:
-            cont = 0 -> bounding faces -> brown
-            cont = odd values  -> B
-            cont = even values -> W
+        Remove / contract an i-cell of dart
+        d  ... dart
+        i  ... i-cell
+        rc ... +1 => remove, -1 => contract
+        skip_check ... set to True if you are sure you can remove / contract the i-cell
         """
+        logging.debug (f'{"Remove" if rc == 1 else "Contract"} {i}-Cell of dart {dart}')
+
+        if not skip_check:
+            assert self._is_i_removable_or_contractible(i, dart, rc),\
+                f'{i}-cell of dart {dart} is not {"removable" if rc == 1 else "contractible"}!'
+
+        """
+            Every time the checking is over I assume that I can increment the variable that keeps trace of
+            the levels because the dart is removed/contracted, for sure.
+        """
+        self.m.level += 1
+        #print(f'level -> {self.level}')
+
+        
+        #print(type(self.alpha[i]))
+
+        i_cell = set(self.m.cell_i(i, dart))  # mark all the darts in ci(d)
+        print(i_cell)
+
+        #print(f'i-cell -> {i_cell}')
+        #print(f'\n{i}-cell to be removed {i_cell}')
+        for d in i_cell:
+            if self.labels[dart] != self.labels[d]:
+                print(f'{dart} and {d} do not have the same label! I cannot set the new alpha for the dart {d}')
+                continue
+
+            d1 = self.m.ai (i,d) # d1 ← d.Alphas[i];
+            if d1 not in i_cell:  # if not isMarkedNself(d1,ma) then
+                # d2 ← d.Alphas[i + 1].Alphas[i];
+                #print(f'd1 -> {d1}')
+                d2 = self.m.ai (i+rc,d)
+                d2 = self.m.ai (i   ,d2)
+                while d2 in i_cell: # while isMarkedNself(d2,ma) do
+                    # d2 ← d.Alphas[i + 1].Alphas[i];
+                    d2 = self.m.ai (i+rc,d2)
+                    d2 = self.m.ai (i   ,d2)
+                logging.debug (f'Modifying alpha_{i} of dart {d1} from {self.m.ai (i,d1)} to {d2}')
+
+                self.m.set_ai(i,d1,d2) # d1.Alphas[i] ← d2;
+
+        
+        """
+            In that for loop, in addition to remove the dart given in input,
+            I also check if involutions of this dart are different from the
+            implicitly ones. If they are different, then they will move into
+            the passive part, otherwise nothing will be stored.
+
+            I wanto to say that implementation is been provided to work with
+            2-Gmaps. For that reason there are only three if statements to check
+            which j-value I am analysing.
+        """
+        for d in i_cell:  # foreach dart d' ∈ ci(d) do
+
+            if self.labels[dart] != self.labels[d]:
+                print(f'{dart} and {d} do not have the same label! I cannot remove dart {d}')
+                continue
+
+            for j in self.m.all_dimensions:
+                if j == 0:
+                    if self.m.alpha[j][d] != self.m.alpha[j].get_alpha0(d):
+                        self.m.custom_alpha[j][d] = self.m.alpha[j][d]
+
+                if j == 1:
+                    if self.m.alpha[j][d] != self.m.alpha[j].get_alpha1(d):
+                        self.m.custom_alpha[j][d] = self.m.alpha[j][d]
+
+                if j == 2:
+                    if self.m.alpha[j][d] != self.m.alpha[j].get_alpha2(d):
+                        self.m.custom_alpha[j][d] = self.m.alpha[j][d]
+                
+            self.m.dart_level[d] = self.m.level
+
+            print(f'dart that will be removed -> {d}')
+            self.m._remove_dart (d)  # remove d' from gm.Darts;
+        
+        
+
+    def _is_i_removable_or_contractible(self, i, dart, rc):
+        """
+        Test if an i-cell of dart is removable/contractible:
+
+        i    ... i-cell
+        dart ... dart
+        rc   ... +1 => removable test, -1 => contractible test
+        """
+        assert dart in self.m.darts
+        assert 0 <= i <= self.m.n
+        assert rc in {-1, +1}
+
+        if rc == +1:  # removable test
+            if i == self.m.n  : return False
+            if i == self.m.n-1: return True
+        if rc == -1:  # contractible test
+            if i == 0: return False
+            if i == 1: return True
+
+        for d in self.m.cell_i(i, dart):
+            if self.m.alpha[i+rc][self.m.alpha[i+rc+rc][d]] != self.m.alpha[i+rc+rc][self.m.alpha[i+rc][d]]:
+                return False
+        return True
+    
+    """
+        Method to print the active part (current Gmap) that is stored into the data structure.
+    """
+    def print_alpha(self):
+        for i in range(0, self.m.n + 1):
+            print(f'\nAlpha_{i} -> {self.m.alpha[i]}')
