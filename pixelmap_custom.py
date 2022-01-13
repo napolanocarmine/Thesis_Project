@@ -347,8 +347,10 @@ class custom_LM(dict_nGmap):
     def __init__(self):
         self.labels = {}
         self.m = dict_nGmap(2, D)
+        self.boundary_darts = set()
+        self.bounded = False
 
-    def generate_chessboard_labels(self):
+    def generate_chessboard_labels_odd_resolution(self):
 
         """
             I can distinguish three cases:
@@ -360,10 +362,10 @@ class custom_LM(dict_nGmap):
         cnt = 0
         for x in self.m.all_i_cells(2):
             
-            #print(list(x))
+            print(list(x))
             for i in x:
                 if cnt == 0:
-                    self.labels[i] = 'red'
+                    self.labels[i] = 'brown'
                 elif cnt % 2 == 0:
                     self.labels[i] = 'blue'
                 else:
@@ -371,40 +373,83 @@ class custom_LM(dict_nGmap):
             
             cnt += 1
 
-    def generate_chessboard_labels_2(self):
-        
+    def generate_chessboard_labels_even_resolution(self, bounded = None):
+
+        self.bounded = bounded
         res = R*C
         if res % 2 != 0:
             self.generate_chessboard_labels()
         else:
-            k_odd = 1
+            k = 1
             cnt = 0
-            odd_label = 'blue'
+            odd_label = 'gray'
             even_label = 'black'
             for x in self.m.all_i_cells(2):
+
                 
+                print(list(x))
                 # 1 + (R*k_odd) is the point from which a new row starts
-                if cnt == 1+((R/2)*k_odd):
-                    if k_odd % 2 == 0:
-                        odd_label = 'blue'
+                if cnt == 1+((R/2)*k) or cnt == 2+((R/2)*k):
+                    if k % 2 == 0:
+                        odd_label = 'gray'
                         even_label = 'black'
                     else:
                         odd_label = 'black'
-                        even_label = 'blue'
+                        even_label = 'gray'
                     
-                    k_odd += 1
-                    print(cnt)
+                    k += 1
+                    #print(cnt)
                 
                 for i in x:
                     if cnt == 0:
-                        self.labels[i] = 'red'
+                        self.labels[i] = 'brown'
                     elif cnt % 2 == 0:
                         self.labels[i] = even_label
                     else:
                         self.labels[i] = odd_label
                 cnt += 1
+
+        if bounded == True:
             
-    
+            for d, l in zip(self.labels.keys(), self.labels.values()):
+                if l == 'brown':
+                    self.boundary_darts.add(d)
+                    #self.m.darts.remove(d)
+
+            for bd in self.boundary_darts:
+                self.labels[bd] = self.labels[alpha_2(bd)] 
+
+                
+    def generate_chessboard_labels_considering_alpha2(self, bounded = None):
+
+        #self.bounded = bounded
+        boundary = False #not done yet
+        label = 'black'
+
+
+        for x in self.m.all_i_cells(2):
+            for i in x:
+                if boundary == False:
+                    self.labels[i] = 'brown'
+                    continue
+                
+                try:
+                    if self.labels[alpha_2(i)] == 'black':
+                        label = 'blue'
+                    elif self.labels[alpha_2(i)] == 'blue':
+                        label = 'black'
+                except KeyError:
+                    pass
+
+            for i in x:
+                if boundary == False:
+                    self.labels[i] = 'brown'
+                    continue
+                self.labels[i] = label   
+
+            boundary = True #just to avoid the if above during next iterations
+
+
 
     def _i_remove_contract(self, i, dart, rc, skip_check=False):
         
@@ -487,7 +532,7 @@ class custom_LM(dict_nGmap):
                 
             self.m.dart_level[d] = self.m.level
 
-            print(f'dart that will be removed -> {d}')
+            #print(f'dart that will be removed -> {d}')
             self.m._remove_dart (d)  # remove d' from gm.Darts;
         
     def _is_i_removable_or_contractible(self, i, dart, rc):
@@ -518,21 +563,44 @@ class custom_LM(dict_nGmap):
         
         # d ... some dart while iterating over all edges
         for d in list (self.m.darts_of_i_cells (1)):
+            
+            #print(f'd: {d}',end='-')
             # e ... dart of the oposit face          
             try:
                 e = self.m.alpha[2][d]
             except KeyError:
-                e = alpha_2(d)                           
+                e = alpha_2(d)
 
-            if self.labels[d] == 'red':                               # boundary edge
+            print(f'd:{d}, e:{e}')
+
+            """
+                In the case in which the generated chessboard is not bounded (bounded = False), the boundary darts set will be empty
+                and this if statment will be skipped.
+            """
+            if e in self.boundary_darts and self.bounded == False:
+                continue               
+            
+            """
+                Condition to check if d is a boundary dart. I have assigned BROWN label to the boundary of the chessboard just to represent
+                a real one.
+            """
+            if self.labels[d] == 'brown':                               # boundary edge
                 logging.debug ('Skipping: belongs to boundary.')
-                print(f'{d} is a boundary edge')
+                print(f'{d} is a boundary dart')
                 continue
-
-            if self.labels[d] == self.labels[e]:
+            
+            """
+                If the label of d and e are the same, the edge at which the dart d belong, can be removed.
+            """
+            if self.labels[d] == self.labels[e] and self.labels[d] == self.labels[alpha_0(d)] and self.labels[d] == self.labels[alpha_0(alpha_2(d))]:
+                print(f'I am removing the dart {d} due to the same colorful label!')
                 self.m._remove(1, d)
                 continue
-
+            
+            if d == alpha_1(e):
+                print(f'{d} is a pending dart')
+                self.m._remove(1, d)
+                continue
 
 
 '''             if d == self.a1(e):                      # dangling dart

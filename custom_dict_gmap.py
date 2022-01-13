@@ -198,7 +198,7 @@ class dict_nGmap:
         sequence ... valid list of dimensional indices
         d ... dart
         """
-        print(f'd -> {d}')
+        #print(f'd -> {d}')
         ma = self.reserve_mark()
         self.mark_orbit(sequence, d, ma)
         orbit = self.marks[ma].keys()
@@ -552,7 +552,7 @@ class dict_nGmap:
             d1 = self.ai (i,d) # d1 ← d.Alphas[i];
             if d1 not in i_cell:  # if not isMarkedNself(d1,ma) then
                 # d2 ← d.Alphas[i + 1].Alphas[i];
-                print(f'd1 -> {d1}')
+                #print(f'd1 -> {d1}')
                 d2 = self.ai (i+rc,d)
                 d2 = self.ai (i   ,d2)
                 while d2 in i_cell: # while isMarkedNself(d2,ma) do
@@ -590,7 +590,7 @@ class dict_nGmap:
                 
             self.dart_level[d] = self.level
 
-            print(f'dart that will be removed -> {d}')
+            #print(f'dart that will be removed -> {d}')
             self._remove_dart (d)  # remove d' from gm.Darts;
 
     """
