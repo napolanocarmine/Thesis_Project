@@ -630,24 +630,36 @@ class custom_LM(dict_nGmap):
                     f'I am removing the dart {d} due to the same colorful label!')
                 self.m._remove(1, d)
                 continue
-    
+
     def generated_grafted_grids(self):
         
         cnt = 0
-        labels = ['green','orange']
-        l = labels[0]
+        labels = ['brown', 'green', 'orange', 'orange', 'green']
+        k = 1
+        l = labels[k]
+        #toggle_val = 1
+
+        ''' for _ in range(4):
+            toggle_val = (1,0)[toggle_val]
+            print(toggle_val) '''
+
 
         for x in self.m.all_i_cells(2):
-            print(x)
             for i in x:
                 if cnt == 0:
                     self.labels[i] = 'brown'
                     continue
+                
+                
 
-                if cnt % 4 == 0:
-                    l = labels[1]
-                else:
-                    self.labels[i] = l
-
-            cnt =+ 1
+                if cnt == 1+(R*k):
+                    print(cnt)
+                    k += 1
+                    try:
+                        l = labels[k]
+                    except IndexError:
+                        pass
+                self.labels[i] = l
+                    
+            cnt += 1
 
