@@ -678,7 +678,7 @@ class custom_LM(dict_nGmap):
             cnt += 1
 
     def read_image(self, filepath=None):
-        image = cv2.imread(r'C:\Users\CARMINE\Downloads\Telegram Desktop/3_3_boundary_reduced.png')
+        image = cv2.imread(filepath)
         print(image.shape[0], image.shape[1])
 
         '''         scale_percent = 60 # percent of original size
