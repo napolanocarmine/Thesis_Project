@@ -11,6 +11,7 @@ import numpy as np
 import logging
 from random import random
 import random
+import cv2
 logging.basicConfig()
 logging.getLogger().setLevel(logging.INFO)
 
@@ -460,6 +461,19 @@ class custom_LM(dict_nGmap):
             c = random.choice(labels)
             for i in x:
                 self.labels[i] = c
+    
+    def bounded_black_gmap(self, bounded=None):
+
+        cnt = 0
+        for x in self.m.all_i_cells(2):
+            for i in x:
+                if bounded == False:
+                    if cnt == 0:
+                        self.labels[i] = 'red'
+                else:
+                    self.labels[i] = 'black'
+            cnt = 1
+        
 
     def _i_remove_contract(self, i, dart, rc, skip_check=False):
         """
@@ -663,3 +677,49 @@ class custom_LM(dict_nGmap):
                     
             cnt += 1
 
+    def read_image(self, filepath=None):
+        image = cv2.imread(r'C:\Users\CARMINE\Downloads\Telegram Desktop/3_3_boundary_reduced.png')
+        print(image.shape[0], image.shape[1])
+
+        '''         scale_percent = 60 # percent of original size
+        width = int(image.shape[1] * scale_percent / 100)
+        height = int(image.shape[0] * scale_percent / 100)
+        dim = (width, height)
+
+        image = cv2.resize(image, dim, interpolation = cv2.INTER_AREA) '''
+        # Iterate 2-cells by row-columns
+
+        first_dart = 2 # 2 is always the identifier associated to the dart in the cell
+                    # with coordinates (0, 0) in the top left position
+                    
+        prec_row_dart = first_dart
+        curr_dart = first_dart
+                    
+        for i in range(R):
+            for j in range(C):
+                self.mark_all_darts_in_the_2_cell_orbit(curr_dart, tuple(np.divide(image[i][j], 255))) # mark all darts in the 2-orbit
+                                                                        # of the current dart with the label
+                                                                        # associated to the image in the position (i, j)
+                curr_dart = self.next_col(curr_dart)
+                
+            curr_dart = self.next_row(prec_row_dart)
+            prec_row_dart = curr_dart
+            
+    def next_col(self, dart):
+        return alpha_1(alpha_2(alpha_1(alpha_0(dart))))
+        
+    def next_row(self, dart):
+        return alpha_2(alpha_1(alpha_0(alpha_1(dart))))
+        
+    def mark_all_darts_in_the_2_cell_orbit(self, dart, label):
+        # label has to be assigned to all the darts in the 2 orbit of dart
+        # I think that the already existing orbit method can be used to visit all the darts in a given face (given a dart of that face)
+        # Anyway the implementation of that method is not difficult
+
+        for x in self.m.all_i_cells(2):
+            if dart in x:
+                for i in x:
+                    self.labels[i] = label
+            else:
+                continue
+                

@@ -88,7 +88,7 @@ for B in 8,16,32,64:
     print (f'| {B:2} | {B//2-2:2} |  {B//2-1:2} |  {2**(B//2-2)-1:10} | {2**(B//2-1)-1:10} | ')
 """
 # %%
-R,C = 4,4 # number of rows and columns
+R,C = 3,3 # number of rows and columns
 
 # %%
 bits2type = {
@@ -511,11 +511,14 @@ def plot(D):
 def plot_chessboard(D, chessboard=None, filename=None):
     plt.figure(figsize=(30,22),frameon=False)
     # plt.tight_layout()
+    f = open("organization_pixelMap.txt", "w")
     
     for d in D:
     #     e,i = d // 4, d % 4
     #     y,x,a = e2yxa (e,R,C)
         x,y = deinterleave2(d >> 3)
+        f.write(f'd:{d}, x:{x}, y:{y}\n')
+        #print(f'd:{d}, x:{x}, y:{y}')
         a = d >> 2 & 1
         i = d & 0b011
         
@@ -523,7 +526,11 @@ def plot_chessboard(D, chessboard=None, filename=None):
         text = f'{d} = {b[:-3]}-{b[-3]}-{b[-2:]}'
         #color = colormap((256//((R+1)*(C+1)))*(d//8)) # if y < R and x < C else '0.6'
         
-        if chessboard != None: color = chessboard.labels[d]
+        if chessboard != None: 
+            try:
+                color = chessboard.labels[d]
+            except KeyError: 
+                color = 'black'
         else: color = 'black'
         
         if a == 0:
@@ -553,7 +560,7 @@ def plot_chessboard(D, chessboard=None, filename=None):
     pass
     plt.gca().axis('off')
 
-
+    f.close()
     
     if filename is None:
         plt.savefig(f'Morton_Chessboard_{R}x{C}.png')

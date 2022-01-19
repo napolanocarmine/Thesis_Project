@@ -591,6 +591,7 @@ class dict_nGmap:
             self.dart_level[d] = self.level
 
             #print(f'dart that will be removed -> {d}')
+            
             self._remove_dart (d)  # remove d' from gm.Darts;
 
     """
