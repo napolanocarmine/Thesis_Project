@@ -621,11 +621,14 @@ class custom_LM(dict_nGmap):
             """
                 If the label of d and e are the same, the edge at which the dart d belong, can be removed.
             """
-            if self.labels[d] == self.labels[e] and self.labels[d] == self.labels[alpha_0(d)] and self.labels[d] == self.labels[alpha_0(alpha_2(d))]:
-                print(
-                    f'I am removing the dart {d} due to the same colorful label!')
-                self.m._remove(1, d)
-                continue
+            try:
+                if self.labels[d] == self.labels[e] and self.labels[d] == self.labels[alpha_0(d)] and self.labels[d] == self.labels[alpha_0(alpha_2(d))]:
+                    print(
+                        f'I am removing the dart {d} due to the same colorful label!')
+                    self.m._remove(1, d)
+                    continue
+            except KeyError:
+                pass
 
             if d == alpha_1(e):
                 print(f'{d} is a pending dart')
