@@ -562,9 +562,5 @@ def plot_chessboard(D, chessboard=None, filename=None):
 
     f.close()
     
-    if filename is None:
-        plt.savefig(f'Morton_Chessboard_{R}x{C}.png')
-        plt.savefig(f'Morton_Chessboard_{R}x{C}.pdf')
-    else:
-        plt.savefig(f'Morton_Chessboard_{R}x{C}_{filename}.png')
-        plt.savefig(f'Morton_Chessboard_{R}x{C}_{filename}.pdf')
+    plt.savefig(f'{R}x{C}_{filename}.png')
+    plt.savefig(f'{R}x{C}_{filename}.pdf')

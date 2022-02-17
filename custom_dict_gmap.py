@@ -184,7 +184,7 @@ class dict_nGmap:
         self.darts.remove(d)
 
 
-        print(f'delete -> {d}')
+        #print(f'delete -> {d}')
 
         """
             We are removing the dart from every alpha

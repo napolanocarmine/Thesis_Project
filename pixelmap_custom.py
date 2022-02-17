@@ -3,7 +3,7 @@
 
 from cProfile import label
 from custom_dict_gmap import dict_nGmap
-from pixel_map_z_curve_full import D, alpha_0, R, C, alpha_1, alpha_2
+from pixel_map_z_curve_full import D, alpha_0, R, C, alpha_1, alpha_2, plot_chessboard
 import matplotlib.pyplot as plt
 from combinatorial.notebooks.combinatorial.zoo import G2_SQUARE_BOUNDED, G2_SQUARE_UNBOUNDED
 from combinatorial.notebooks.combinatorial.gmaps import nGmap
@@ -353,10 +353,11 @@ class LabelMap (PixelMap):
 class custom_LM(dict_nGmap):
 
     def __init__(self):
-        self.labels = {}
+        #self.labels = {}
         self.m = dict_nGmap(2, D)
         self.boundary_darts = set()
         self.bounded = False
+        self.labels = {x: 'black' for x in self.m.darts}
 
     def generate_chessboard_labels_odd_resolution(self):
         """
@@ -429,26 +430,26 @@ class custom_LM(dict_nGmap):
 
         #self.bounded = bounded
         boundary = False  # not done yet
-        label = 'black'
+        label = 'red'
 
         for x in self.m.all_i_cells(2):
             for i in x:
-                if boundary == False:
+                """if boundary == False:
                     self.labels[i] = 'brown'
-                    continue
+                    continue """
 
                 try:
-                    if self.labels[alpha_2(i)] == 'black':
+                    if self.labels[alpha_2(i)] == 'red':
                         label = 'blue'
                     elif self.labels[alpha_2(i)] == 'blue':
-                        label = 'black'
+                        label = 'red'
                 except KeyError:
                     pass
 
             for i in x:
-                if boundary == False:
+                """ if boundary == False:
                     self.labels[i] = 'brown'
-                    continue
+                    continue """
                 self.labels[i] = label
 
             boundary = True  # just to avoid the if above during next iterations
@@ -613,9 +614,13 @@ class custom_LM(dict_nGmap):
                 Condition to check if d is a boundary dart. I have assigned BROWN label to the boundary of the chessboard just to represent
                 a real one.
             """
-            if self.labels[d] == 'brown':                               # boundary edge
-                logging.debug('Skipping: belongs to boundary.')
-                print(f'{d} is a boundary dart')
+            try:
+                #if self.labels[d] == 'brown':                               # boundary edge
+                if d == e:
+                    logging.debug('Skipping: belongs to boundary.')
+                    print(f'{d} is a boundary dart')
+                    continue
+            except KeyError:
                 continue
 
             """
@@ -623,8 +628,7 @@ class custom_LM(dict_nGmap):
             """
             try:
                 if self.labels[d] == self.labels[e] and self.labels[d] == self.labels[alpha_0(d)] and self.labels[d] == self.labels[alpha_0(alpha_2(d))]:
-                    print(
-                        f'I am removing the dart {d} due to the same colorful label!')
+                    #print(f'I am removing the dart {d} due to the same colorful label!')
                     self.m._remove(1, d)
                     continue
             except KeyError:
